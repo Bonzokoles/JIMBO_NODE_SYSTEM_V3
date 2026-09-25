@@ -12,6 +12,28 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { XtermDisplay } from './XtermDisplay'
 
 export const CustomNode = memo(({ data, id, selected }: NodeProps<WorkflowNode>) => {
+  const updateNodeData = useWorkflowStore((state) => state.updateNodeData)
+  
+  const addDynamicPort = (type: 'input' | 'output') => {
+    if (type === 'input') {
+      const current = data.dynamicInputs || 0
+      updateNodeData(id, { dynamicInputs: current + 1 })
+    } else {
+      const current = data.dynamicOutputs || 0
+      updateNodeData(id, { dynamicOutputs: current + 1 })
+    }
+  }
+  
+  const removeDynamicPort = (type: 'input' | 'output') => {
+    if (type === 'input') {
+      const current = data.dynamicInputs || 0
+      if (current > 0) updateNodeData(id, { dynamicInputs: current - 1 })
+    } else {
+      const current = data.dynamicOutputs || 0
+      if (current > 0) updateNodeData(id, { dynamicOutputs: current - 1 })
+    }
+  }
+
   const [isCollapsed, setIsCollapsed] = useState(false)
   
   const statusColors = {
@@ -71,11 +93,24 @@ export const CustomNode = memo(({ data, id, selected }: NodeProps<WorkflowNode>)
   return (
     <>
       <Handle
+        id="target"
         type="target"
         position={Position.Left}
         className="!w-2 !h-6 !rounded-none transition-all duration-200 !bg-[#d4a574] !border-[#d4a574] hover:!bg-white"
-        style={{ left: -1 }}
+        style={{ left: -1, top: data.dynamicInputs ? `${100 / ((data.dynamicInputs || 0) + 2)}%` : '50%' }}
       />
+      {Array.from({ length: data.dynamicInputs || 0 }).map((_, i) => (
+        <Handle
+          key={`target-${i + 1}`}
+          id={`target-${i + 1}`}
+          type="target"
+          position={Position.Left}
+          className="!w-2 !h-4 !rounded-none transition-all duration-200 !bg-[#d4a574]/70 !border-[#d4a574] hover:!bg-white"
+          style={{ left: -1, top: `${(100 / ((data.dynamicInputs || 0) + 2)) * (i + 2)}%` }}
+        >
+           <span className="absolute -left-3 text-[8px] text-gray-500 font-mono">{i+1}</span>
+        </Handle>
+      ))}
       <Card className={cn(
         'font-mono min-w-[260px] transition-all duration-300 bg-[#0a0e14] border-[#1a202c] shadow-none !rounded-none',
         isCollapsed ? 'max-w-[280px]' : 'max-w-[340px]',
@@ -162,6 +197,18 @@ export const CustomNode = memo(({ data, id, selected }: NodeProps<WorkflowNode>)
             </div>
             
             <div className="flex items-center justify-end gap-1 p-2 bg-[#05070a] border-t border-[#1a202c]">
+              <div className="flex-1 flex gap-2 items-center">
+                <div className="flex gap-1 items-center bg-[#1a202c] p-0.5">
+                  <Button variant="ghost" size="sm" className="h-4 w-4 p-0 text-[10px] !rounded-none hover:bg-white/10" onClick={(e) => { e.stopPropagation(); addDynamicPort('input'); }}>+</Button>
+                  <span className="text-[9px] text-gray-400 font-mono">IN</span>
+                  <Button variant="ghost" size="sm" className="h-4 w-4 p-0 text-[10px] !rounded-none hover:bg-white/10" onClick={(e) => { e.stopPropagation(); removeDynamicPort('input'); }}>-</Button>
+                </div>
+                <div className="flex gap-1 items-center bg-[#1a202c] p-0.5">
+                  <Button variant="ghost" size="sm" className="h-4 w-4 p-0 text-[10px] !rounded-none hover:bg-white/10" onClick={(e) => { e.stopPropagation(); addDynamicPort('output'); }}>+</Button>
+                  <span className="text-[9px] text-gray-400 font-mono">OUT</span>
+                  <Button variant="ghost" size="sm" className="h-4 w-4 p-0 text-[10px] !rounded-none hover:bg-white/10" onClick={(e) => { e.stopPropagation(); removeDynamicPort('output'); }}>-</Button>
+                </div>
+              </div>
               <Button
                 variant="ghost"
                 size="sm"
@@ -191,11 +238,24 @@ export const CustomNode = memo(({ data, id, selected }: NodeProps<WorkflowNode>)
         )}
       </Card>
       <Handle
+        id="source"
         type="source"
         position={Position.Right}
         className="!w-2 !h-6 !rounded-none transition-all duration-200 !bg-[#00E6A8] !border-[#00E6A8] hover:!bg-white"
-        style={{ right: -1 }}
+        style={{ right: -1, top: data.dynamicOutputs ? `${100 / ((data.dynamicOutputs || 0) + 2)}%` : '50%' }}
       />
+      {Array.from({ length: data.dynamicOutputs || 0 }).map((_, i) => (
+        <Handle
+          key={`source-${i + 1}`}
+          id={`source-${i + 1}`}
+          type="source"
+          position={Position.Right}
+          className="!w-2 !h-4 !rounded-none transition-all duration-200 !bg-[#00E6A8]/70 !border-[#00E6A8] hover:!bg-white"
+          style={{ right: -1, top: `${(100 / ((data.dynamicOutputs || 0) + 2)) * (i + 2)}%` }}
+        >
+           <span className="absolute -right-3 text-[8px] text-gray-500 font-mono">{i+1}</span>
+        </Handle>
+      ))}
     </>
   )
 })

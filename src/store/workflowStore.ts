@@ -12,6 +12,8 @@ export interface WorkflowNode extends Node {
     type: string
     status?: NodeStatus
     config?: Record<string, any>
+    dynamicInputs?: number
+    dynamicOutputs?: number
     result?: any
     error?: string
   }
