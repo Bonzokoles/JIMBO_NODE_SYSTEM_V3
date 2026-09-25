@@ -27,12 +27,14 @@ import { SaveAsTemplateDialog } from '@/components/SaveAsTemplateDialog'
 import { WorkflowTemplate } from '@/lib/workflowTemplates'
 import { useRef, useState } from 'react'
 import { CustomNodesManager } from '@/components/CustomNodesManager'
+import { AIOrchestratorDialog } from '@/components/AIOrchestratorDialog'
 
 export function Toolbar() {
   const { t } = useTranslation()
   const { i18n } = useI18n()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [customNodesOpen, setCustomNodesOpen] = useState(false)
+    const [orchestratorOpen, setOrchestratorOpen] = useState(false)
   
   const {
     workflowName,
@@ -369,6 +371,9 @@ export function Toolbar() {
       onClose={() => setCustomNodesOpen(false)}
       onNodeAdd={handleCustomNodeAdd}
     />
+      <AIOrchestratorDialog open={orchestratorOpen} onOpenChange={setOrchestratorOpen} />
     </>
   )
 }
+
+
