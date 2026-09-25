@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { CheckCircle, Circle } from '@phosphor-icons/react'
-import { AI_PROVIDERS, getProviderForNodeType } from '@/lib/envConfig'
+import { AI_PROVIDERS, getProviderForNodeType, getEnvFallback } from '@/lib/envConfig'
 import { useEnvConfig } from '@/store/configStore'
 import { cn } from '@/lib/utils'
 
@@ -33,7 +33,8 @@ export function AIProviderSelector({
 
   const isProviderConfigured = (providerId: string) => {
     const provider = AI_PROVIDERS.find(p => p.id === providerId)
-    return provider ? !!config[provider.apiKeyName] : false
+    if (!provider) return false
+    return !!config[provider.apiKeyName] || !!getEnvFallback(provider.apiKeyName)
   }
 
   return (

@@ -181,6 +181,11 @@ export class WorkflowExecutionEngine {
           if (envConfig) apiKey = envConfig['OPENAI_API_KEY'] || ''
         }
         
+        // Fallback do pliku .env
+        if (!apiKey) {
+          apiKey = import.meta.env.VITE_OPENAI_API_KEY || ''
+        }
+        
         if (!apiKey) {
           // Fallback to window.spark.llm if no API key is provided
           const response = await (window as any).spark.llm(promptText, model as 'gpt-4o' | 'gpt-4o-mini')

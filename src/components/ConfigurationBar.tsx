@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useEnvConfig } from '@/store/configStore'
-import { AI_PROVIDERS, AIProvider } from '@/lib/envConfig'
+import { AI_PROVIDERS, AIProvider, getEnvFallback } from '@/lib/envConfig'
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
 import { AddonsManager } from '@/components/AddonsManager'
@@ -78,7 +78,7 @@ export function ConfigurationBar({
   }
 
   const getProviderStatus = (provider: AIProvider) => {
-    return config[provider.apiKeyName] ? 'configured' : 'not-configured'
+    return (config[provider.apiKeyName] || getEnvFallback(provider.apiKeyName)) ? 'configured' : 'not-configured'
   }
 
   return (
@@ -222,7 +222,7 @@ export function ConfigurationBar({
                           id={`api-key-${provider.id}`}
                           type="password"
                           placeholder={`Enter ${provider.apiKeyName}`}
-                          defaultValue={config[provider.apiKeyName] || ''}
+                          defaultValue={config[provider.apiKeyName] || getEnvFallback(provider.apiKeyName) || ''}
                           onBlur={(e) => handleApiKeyChange(provider, e.target.value)}
                           className="font-mono text-xs"
                         />
@@ -328,5 +328,6 @@ export function ConfigurationBar({
     </div>
   )
 }
+
 
 
