@@ -113,7 +113,7 @@ export function WorkflowCanvas({
         <div 
           className="absolute inset-0 z-0 bg-center bg-cover pointer-events-none"
           style={{
-            backgroundImage: `url(${backgroundImage})`,
+            backgroundImage: `url(${backgroundImage && !backgroundImage.includes('/') && !backgroundImage.startsWith('http') ? '/backgrounds/' + backgroundImage : backgroundImage})`,
             opacity: backgroundOpacity,
           }}
         />
