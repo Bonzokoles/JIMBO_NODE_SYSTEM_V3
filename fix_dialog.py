@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+content = '''import React, { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -63,7 +63,7 @@ Rules:
 2. The 'type' property of the node MUST be 'customNode' (this is required by the React Flow engine for our app).
 3. The actual specific tool type MUST be placed in 'data.type'.
 4. Ensure node positions (x, y) are spaced out logically (e.g. x: 0, 250, 500).
-5. Output ONLY the JSON, without markdown formatting like \\\\\json.
+5. Output ONLY the JSON, without markdown formatting like \\\\\\\\\json.
 6. Connect the output of one node to the input of another via edges.
 
       const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
@@ -160,3 +160,7 @@ Rules:
       </DialogContent>
     </Dialog>
   )
+'''
+
+with open(r'Z:\jimbo-node-system-v2\src\components\AIOrchestratorDialog.tsx', 'w', encoding='utf-8') as f:
+    f.write(content)
