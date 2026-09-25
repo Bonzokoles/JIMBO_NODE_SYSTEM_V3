@@ -1,3 +1,4 @@
+import { useWorkflowStore } from '@/store/workflowStore'
 import { memo, useState } from 'react'
 import { Handle, Position, NodeProps } from '@xyflow/react'
 import { Card } from '@/components/ui/card'
@@ -12,25 +13,25 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { XtermDisplay } from './XtermDisplay'
 
 export const CustomNode = memo(({ data, id, selected }: NodeProps<WorkflowNode>) => {
-  const updateNodeData = useWorkflowStore((state) => state.updateNodeData)
+  const updateNode = useWorkflowStore((state) => state.updateNode)
   
   const addDynamicPort = (type: 'input' | 'output') => {
     if (type === 'input') {
       const current = data.dynamicInputs || 0
-      updateNodeData(id, { dynamicInputs: current + 1 })
+      updateNode(id, { dynamicInputs: current + 1 })
     } else {
       const current = data.dynamicOutputs || 0
-      updateNodeData(id, { dynamicOutputs: current + 1 })
+      updateNode(id, { dynamicOutputs: current + 1 })
     }
   }
   
   const removeDynamicPort = (type: 'input' | 'output') => {
     if (type === 'input') {
       const current = data.dynamicInputs || 0
-      if (current > 0) updateNodeData(id, { dynamicInputs: current - 1 })
+      if (current > 0) updateNode(id, { dynamicInputs: current - 1 })
     } else {
       const current = data.dynamicOutputs || 0
-      if (current > 0) updateNodeData(id, { dynamicOutputs: current - 1 })
+      if (current > 0) updateNode(id, { dynamicOutputs: current - 1 })
     }
   }
 
