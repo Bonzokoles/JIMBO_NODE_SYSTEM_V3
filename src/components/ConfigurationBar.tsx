@@ -222,8 +222,8 @@ export function ConfigurationBar({
                           id={`api-key-${provider.id}`}
                           type="password"
                           placeholder={`Enter ${provider.apiKeyName}`}
-                          value={config[provider.apiKeyName] || ''}
-                          onChange={(e) => handleApiKeyChange(provider, e.target.value)}
+                          defaultValue={config[provider.apiKeyName] || ''}
+                          onBlur={(e) => handleApiKeyChange(provider, e.target.value)}
                           className="font-mono text-xs"
                         />
                         <div className="flex flex-wrap gap-1">
@@ -328,3 +328,5 @@ export function ConfigurationBar({
     </div>
   )
 }
+
+
