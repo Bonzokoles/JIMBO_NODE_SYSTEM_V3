@@ -177,8 +177,12 @@ export class WorkflowExecutionEngine {
     try {
         let apiKey = ''
         if (typeof window !== 'undefined' && (window as any).spark?.kv) {
-          const envConfig = await (window as any).spark.kv.get('env-config')
-          if (envConfig) apiKey = envConfig['OPENAI_API_KEY'] || ''
+          try {
+            const envConfig = await (window as any).spark.kv.get('env-config')
+            if (envConfig) apiKey = envConfig['OPENAI_API_KEY'] || ''
+          } catch (err) {
+            console.warn('Spark KV store fetch failed (Unauthorized). Falling back to .env')
+          }
         }
         
         // Fallback do pliku .env
