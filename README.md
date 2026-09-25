@@ -1,5 +1,15 @@
 # JIMBO_NODE_SYSTEM_V3
 
+![Project Status](https://img.shields.io/badge/Status-Rozwojowa-success?style=for-the-badge&logo=appveyor)
+![Target](https://img.shields.io/badge/Target-Klient-blue?style=for-the-badge&logo=target)
+![Stack](https://img.shields.io/badge/Stack-React_Flow%20|%20Vite%20|%20Python-orange?style=for-the-badge&logo=react)
+![AI](https://img.shields.io/badge/AI-OpenAI%20|%20LLM-purple?style=for-the-badge&logo=openai)
+
+**Aplikacja rozwojowa (custom software) projektowana i skalowana docelowo pod wymagania Klienta.** 
+Stanowi w pełni izolowany, wizualny silnik (Node-Based Engine) do orkiestracji automatyzacji, z integracjami AI i natywnym dostępem do systemu plików.
+
+![Zrzut ekranu aplikacji](./public/14.png)
+
 ## ARCHITECTURE OVERVIEW
 Advanced Visual Workflow Builder & AI Orchestration Engine. 
 Designed for high-throughput, autonomous node-based execution and AI-driven pipeline synthesis. 
