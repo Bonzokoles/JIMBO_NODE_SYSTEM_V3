@@ -4,11 +4,11 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Sparkle, Key, Loader2 } from '@phosphor-icons/react'
+import { Sparkle, Key, Spinner } from '@phosphor-icons/react'
 import { useWorkflowStore } from '@/store/workflowStore'
 import { addonRegistry } from '@/lib/addons'
 import { toast } from 'sonner'
-import { NODE_TYPES } from '@/lib/nodeDefinitions'
+import { getAllNodeDefinitions } from '@/lib/nodeDefinitions'
 
 interface AIOrchestratorDialogProps {
   open: boolean
@@ -40,7 +40,7 @@ export function AIOrchestratorDialog({ open, onOpenChange }: AIOrchestratorDialo
     setIsGenerating(true)
 
     try {
-      const nativeNodes = NODE_TYPES.map(n => ({ type: n.type, label: n.label, description: n.description }))
+      const nativeNodes = getAllNodeDefinitions().map(n => ({ type: n.type, label: n.label, description: n.description }))
       const addonNodes = addonRegistry.getAllNodes().map(n => ({ type: n.type, label: n.label, config: n.config?.map(c => c.id) }))
       
       const systemPrompt = `You are the Jimbo Workflow Orchestrator. 
@@ -153,7 +153,7 @@ Rules:
             Cancel
           </Button>
           <Button onClick={handleGenerate} disabled={isGenerating} className="gap-2">
-            {isGenerating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkle weight="fill" className="w-4 h-4" />}
+            {isGenerating ? <Spinner className="w-4 h-4 animate-spin" /> : <Sparkle weight="fill" className="w-4 h-4" />}
             Generate Architecture
           </Button>
         </DialogFooter>
@@ -161,3 +161,5 @@ Rules:
     </Dialog>
   )
 }
+
+
