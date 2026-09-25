@@ -175,19 +175,56 @@ export class WorkflowExecutionEngine {
     const model = node.data.config?.model || 'gpt-4o-mini'
     
     try {
-      const response = await window.spark.llm(promptText, model as 'gpt-4o' | 'gpt-4o-mini')
-      
-      return {
-        type: 'ai',
-        model: 'OpenAI',
-        modelName: model,
-        prompt: promptText,
-        response,
-        timestamp: Date.now(),
+        let apiKey = ''
+        if (typeof window !== 'undefined' && (window as any).spark?.kv) {
+          const envConfig = await (window as any).spark.kv.get('env-config')
+          if (envConfig) apiKey = envConfig['OPENAI_API_KEY'] || ''
+        }
+        
+        if (!apiKey) {
+          // Fallback to window.spark.llm if no API key is provided
+          const response = await (window as any).spark.llm(promptText, model as 'gpt-4o' | 'gpt-4o-mini')
+          return {
+            type: 'ai',
+            model: 'OpenAI',
+            modelName: model,
+            prompt: promptText,
+            response,
+            timestamp: Date.now(),
+          }
+        }
+        
+        const res = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: model,
+            messages: [{ role: 'user', content: promptText }]
+          })
+        })
+        
+        if (!res.ok) {
+           const errText = await res.text()
+           throw new Error(`API Error ${res.status}: ${errText}`)
+        }
+        
+        const data = await res.json()
+        const response = data.choices[0].message.content
+        
+        return {
+          type: 'ai',
+          model: 'OpenAI',
+          modelName: model,
+          prompt: promptText,
+          response,
+          timestamp: Date.now(),
+        }
+      } catch (error) {
+        throw new Error(`OpenAI execution failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
       }
-    } catch (error) {
-      throw new Error(`OpenAI execution failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
-    }
   }
   
   private async executeClaude(node: WorkflowNode, inputs: any[], context: ExecutionContext) {
