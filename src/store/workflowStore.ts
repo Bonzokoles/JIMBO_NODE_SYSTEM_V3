@@ -222,7 +222,7 @@ export const useWorkflowStore = create<WorkflowState>()(
           
           try {
             const inputEdges = edges.filter(e => e.target === nodeId)
-            const inputs = inputEdges.map(e => context.nodeResults.get(e.source))
+            const inputs = inputEdges.map(e => ({ handle: e.targetHandle || 'target', value: context.nodeResults.get(e.source) }))
             
             const result = await executionEngine.executeNode(node, inputs, context)
             
