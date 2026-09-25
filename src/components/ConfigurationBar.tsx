@@ -39,6 +39,10 @@ export function ConfigurationBar({
   const [expanded, setExpanded] = useState(false)
   const { config, updateKey } = useEnvConfig()
   const [imageUrl, setImageUrl] = useState(backgroundImage || '')
+  
+  useEffect(() => {
+    setImageUrl(backgroundImage || '')
+  }, [backgroundImage])
   const [addonsManagerOpen, setAddonsManagerOpen] = useState(false)
   const [addonsCount, setAddonsCount] = useState(0)
   const [enabledAddonsCount, setEnabledAddonsCount] = useState(0)

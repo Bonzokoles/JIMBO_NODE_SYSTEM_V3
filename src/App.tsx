@@ -153,10 +153,10 @@ function App() {
       <div className="flex-1 flex overflow-hidden">
         <NodePalette onNodeAdd={handleNodeAdd} />
         <WorkflowCanvasWithProvider
-          minimapEnabled={minimapEnabled || true}
-          minimapOpacity={minimapOpacity || 1}
-          backgroundImage={backgroundImage || null}
-          backgroundOpacity={backgroundOpacity || 0.3}
+          minimapEnabled={canvasConfig?.minimapEnabled ?? true}
+          minimapOpacity={canvasConfig?.minimapOpacity ?? 1}
+          backgroundImage={canvasConfig?.backgroundImage ?? null}
+          backgroundOpacity={canvasConfig?.backgroundOpacity ?? 0.3}
         />
       </div>
 
@@ -168,14 +168,14 @@ function App() {
       <ExecutionLog />
 
       <ConfigurationBar
-        minimapEnabled={minimapEnabled || true}
-        minimapOpacity={minimapOpacity || 1}
-        onMinimapToggle={() => setMinimapEnabled((current) => !current)}
-        onMinimapOpacityChange={(opacity) => setMinimapOpacity(() => opacity)}
-        backgroundImage={backgroundImage || null}
-        backgroundOpacity={(backgroundOpacity || 0.3) * 100}
-        onBackgroundImageChange={(url) => setBackgroundImage(() => url)}
-        onBackgroundOpacityChange={(opacity) => setBackgroundOpacity(() => opacity / 100)}
+        minimapEnabled={canvasConfig?.minimapEnabled ?? true}
+        minimapOpacity={canvasConfig?.minimapOpacity ?? 1}
+        onMinimapToggle={() => updateCanvasConfig({ minimapEnabled: !canvasConfig?.minimapEnabled })}
+        onMinimapOpacityChange={(opacity) => updateCanvasConfig({ minimapOpacity: opacity })}
+        backgroundImage={canvasConfig?.backgroundImage ?? null}
+        backgroundOpacity={(canvasConfig?.backgroundOpacity ?? 0.3) * 100}
+        onBackgroundImageChange={(url) => updateCanvasConfig({ backgroundImage: url })}
+        onBackgroundOpacityChange={(opacity) => updateCanvasConfig({ backgroundOpacity: opacity / 100 })}
       />
 
       <CodeInputWindow />

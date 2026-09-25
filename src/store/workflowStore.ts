@@ -23,6 +23,7 @@ export interface WorkflowState {
   selectedNode: WorkflowNode | null
   isExecuting: boolean
   workflowName: string
+  canvasConfig: { backgroundImage: string | null; backgroundOpacity: number; minimapEnabled: boolean; minimapOpacity: number }
   history: { nodes: WorkflowNode[], edges: Edge[] }[]
   historyIndex: number
   executionEngine: WorkflowExecutionEngine
@@ -40,6 +41,7 @@ export interface WorkflowState {
   
   selectNode: (nodeId: string | null) => void
   setWorkflowName: (name: string) => void
+  updateCanvasConfig: (config: Partial<WorkflowState['canvasConfig']>) => void
   
   executeWorkflow: () => Promise<void>
   resetWorkflow: () => void
@@ -63,6 +65,7 @@ export const useWorkflowStore = create<WorkflowState>()(
     selectedNode: null,
     isExecuting: false,
     workflowName: 'Untitled Workflow',
+    canvasConfig: { backgroundImage: null, backgroundOpacity: 0.3, minimapEnabled: true, minimapOpacity: 1 },
     history: [],
     historyIndex: -1,
     executionEngine: new WorkflowExecutionEngine(),
@@ -118,6 +121,8 @@ export const useWorkflowStore = create<WorkflowState>()(
     }),
     
     setWorkflowName: (name) => set({ workflowName: name }),
+    
+    updateCanvasConfig: (config) => set((state) => { state.canvasConfig = { ...state.canvasConfig, ...config } }),
     
     addToHistory: () => set((state) => {
       const currentState = { nodes: JSON.parse(JSON.stringify(state.nodes)), edges: JSON.parse(JSON.stringify(state.edges)) }
@@ -255,6 +260,7 @@ export const useWorkflowStore = create<WorkflowState>()(
         nodes: state.nodes,
         edges: state.edges,
         workflowName: state.workflowName,
+        canvasConfig: state.canvasConfig,
       }),
     }
   )
