@@ -1,6 +1,6 @@
 import { useWorkflowStore } from '@/store/workflowStore'
-import { memo, useState } from 'react'
-import { Handle, Position, NodeProps } from '@xyflow/react'
+import { memo, useState, useEffect } from 'react'
+import { Handle, Position, NodeProps, useUpdateNodeInternals } from '@xyflow/react'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -14,6 +14,11 @@ import { XtermDisplay } from './XtermDisplay'
 
 export const CustomNode = memo(({ data, id, selected }: NodeProps<WorkflowNode>) => {
   const updateNode = useWorkflowStore((state) => state.updateNode)
+  const updateNodeInternals = useUpdateNodeInternals()
+  
+  useEffect(() => {
+    updateNodeInternals(id)
+  }, [data.dynamicInputs, data.dynamicOutputs, id, updateNodeInternals])
   
   const addDynamicPort = (type: 'input' | 'output') => {
     if (type === 'input') {
