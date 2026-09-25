@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+content = """import React, { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -161,3 +161,7 @@ Rules:
     </Dialog>
   )
 }
+"""
+
+with open(r'Z:\jimbo-node-system-v2\src\components\AIOrchestratorDialog.tsx', 'w', encoding='utf-8') as f:
+    f.write(content)
