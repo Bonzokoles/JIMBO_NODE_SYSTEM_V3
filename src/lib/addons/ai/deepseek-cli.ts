@@ -42,6 +42,12 @@ export const deepseekCliAgentAddon: Addon = {
           label: 'Ręczna intencja (wpisz komendę tutaj)',
           type: 'text',
           defaultValue: 'wylistuj pliki w obecnym katalogu'
+        },
+        {
+          id: 'systemPrompt',
+          label: 'System Prompt (Role)',
+          type: 'text',
+          defaultValue: 'Jesteś ekspertem Windows PowerShell. Zwracasz TYLKO I WYŁĄCZNIE surową komendę PowerShell gotową do wykonania. Żadnego formatowania Markdown (żadnych backticków ```), żadnych wyjaśnień. Tylko kod.'
         }
       ],
       executor: async (inputs, config) => {
