@@ -45,3 +45,11 @@ pids
 .devcontainer/
 
 .spark-workbench-id
+
+# Generated & Config Files
+*config.json
+public/pwd.txt
+src/untitled-workflow.json
+
+public/*.txt
+

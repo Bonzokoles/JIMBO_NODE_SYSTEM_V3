@@ -202,9 +202,12 @@ export function Toolbar() {
   return (
     <>
     <div className="h-14 border-b border-[#1a202c] bg-[#05070a]/70 backdrop-blur-md px-4 flex items-center gap-3 relative z-50">
-      <h1 className="text-xl font-bold text-primary tracking-tight">
-        {t('workflow.title')}
-      </h1>
+      <div className="flex items-center gap-2 min-w-[280px]">
+        <img src="/logo.png" alt="Logo" className="w-8 h-8 rounded-none" />
+        <h1 className="text-xl font-bold text-primary tracking-tight whitespace-nowrap">
+          JIMBO_NODE_SYSTEM_V3
+        </h1>
+      </div>
 
       <Separator orientation="vertical" className="h-8" />
 
@@ -375,5 +378,6 @@ export function Toolbar() {
     </>
   )
 }
+
 
 

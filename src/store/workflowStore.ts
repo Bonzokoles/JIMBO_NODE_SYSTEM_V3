@@ -250,7 +250,7 @@ export const useWorkflowStore = create<WorkflowState>()(
     }),
       })),
     {
-      name: 'jimbo-workspace-storage',
+      name: 'jimbo-workspace-storage-v2',
       partialize: (state) => ({
         nodes: state.nodes,
         edges: state.edges,
@@ -259,4 +259,5 @@ export const useWorkflowStore = create<WorkflowState>()(
     }
   )
 )
+
 
