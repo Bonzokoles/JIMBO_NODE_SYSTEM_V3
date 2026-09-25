@@ -56,7 +56,7 @@ export const deepseekCliAgentAddon: Addon = {
           throw new Error('Brak klucza API DeepSeek w konfiguracji węzła!')
         }
 
-        const intent = inputs.intent || config.intentPrompt || ''
+        const intent = inputs.intent || (inputs.dynamic && inputs.dynamic.length > 0 ? inputs.dynamic.join('\n') : '') || config.intentPrompt || ''
 
         if (!intent) {
           throw new Error('Brak intencji! Podłącz tekst do wejścia "intent" albo wpisz go w konfiguracji węzła.')

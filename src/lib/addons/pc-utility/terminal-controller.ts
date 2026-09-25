@@ -81,7 +81,8 @@ export const terminalControllerAddon: Addon = {
       ],
       execute: async (inputs, config) => {
         try {
-          const code = inputs.code || inputs.trigger?.command || inputs.trigger || config.codeEditor || ''
+          const dynamicCommands = (inputs.dynamic && inputs.dynamic.length > 0) ? inputs.dynamic.map(d => typeof d === 'object' ? (d.command || d.output || JSON.stringify(d)) : String(d)).join('\n') : ''
+          const code = inputs.code || inputs.trigger?.command || inputs.trigger || dynamicCommands || config.codeEditor || ''
           const language = config.language || 'python'
           const workflowContext = config.workflowContext !== false
 

@@ -101,13 +101,27 @@ export class WorkflowExecutionEngine {
     const runFunc = addonNode?.execute || (addonNode as any)?.executor
     if (addonNode && runFunc) {
       const namedInputs: Record<string, any> = {}
-      if (addonNode.inputs) {
-        addonNode.inputs.forEach((portDef, idx) => {
-          if (idx < inputs.length && inputs[idx] !== undefined) {
-            namedInputs[portDef.id] = inputs[idx]?.value !== undefined ? inputs[idx].value : inputs[idx]
+        const dynamicInputs: any[] = []
+        
+        inputs.forEach((inputObj, idx) => {
+          // Backward compatibility check
+          const handle = inputObj?.handle || 'target'
+          const rawVal = inputObj?.value !== undefined ? inputObj.value : inputObj
+          const val = rawVal?.value !== undefined ? rawVal.value : rawVal
+
+          if (handle === 'target' || !handle.startsWith('target-')) {
+            if (addonNode.inputs && addonNode.inputs[idx]) {
+              namedInputs[addonNode.inputs[idx].id] = val
+            } else if (addonNode.inputs && addonNode.inputs.length === 1) {
+               // Fallback: if there's only 1 defined input but it was plugged into a weird handle
+               namedInputs[addonNode.inputs[0].id] = val
+            }
+          } else {
+            dynamicInputs.push(val)
           }
         })
-      }
+        
+        namedInputs.dynamic = dynamicInputs
       return await runFunc(namedInputs, node.data.config || {})
     }
     
@@ -1031,18 +1045,24 @@ Provide a synthesized response that incorporates the best insights from all agen
     if (!inputs || inputs.length === 0) return ''
     
     return inputs
-      .map(input => {
+      .map(wrappedInput => {
+        // Unwrap handle wrapper if present
+        const input = (wrappedInput && typeof wrappedInput === 'object' && 'handle' in wrappedInput && 'value' in wrappedInput) 
+          ? wrappedInput.value 
+          : wrappedInput;
+          
+        if (!input) return ''
         if (typeof input === 'string') return input
-        if (input?.value) return String(input.value)
-        if (input?.text) return String(input.text)
-        if (input?.response) return String(input.response)
-        if (input?.content) return String(input.content)
-        if (input?.summary) return String(input.summary)
-          if (input?.logs && Array.isArray(input.logs)) return input.logs.join('\n')
-        if (input?.translation) return String(input.translation)
+        if (input.text) return String(input.text)
+        if (input.response) return String(input.response)
+        if (input.content) return String(input.content)
+        if (input.summary) return String(input.summary)
+        if (input.logs && Array.isArray(input.logs)) return input.logs.join('\n')
+        if (input.translation) return String(input.translation)
         return JSON.stringify(input)
       })
-      .join('\n')
+      .filter(text => text.trim().length > 0)
+      .join('\n\n')
   }
 }
 
