@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
+import { persist } from 'zustand/middleware'
 import { Node, Edge, Connection, addEdge, applyNodeChanges, applyEdgeChanges, NodeChange, EdgeChange } from '@xyflow/react'
 import { WorkflowExecutionEngine, topologicalSort, detectCycles, ExecutionContext } from '@/lib/executionEngine'
 
@@ -55,7 +56,8 @@ export interface WorkflowState {
 }
 
 export const useWorkflowStore = create<WorkflowState>()(
-  immer((set, get) => ({
+  persist(
+    immer((set, get) => ({
     nodes: [],
     edges: [],
     selectedNode: null,
@@ -246,5 +248,15 @@ export const useWorkflowStore = create<WorkflowState>()(
         node.data.error = undefined
       })
     }),
-  }))
+      })),
+    {
+      name: 'jimbo-workspace-storage',
+      partialize: (state) => ({
+        nodes: state.nodes,
+        edges: state.edges,
+        workflowName: state.workflowName,
+      }),
+    }
+  )
 )
+
