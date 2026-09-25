@@ -1,0 +1,9 @@
+{
+  "nodeType": "deepseek-cli-node",
+  "label": "DeepSeek CLI Agent",
+  "config": {
+    "apiKey": "sk-5a053c9c5dd44a969542ccf836c81884",
+    "model": "deepseek-chat",
+    "intentPrompt": "wylistuj pliki w obecnym katalogu"
+  }
+}

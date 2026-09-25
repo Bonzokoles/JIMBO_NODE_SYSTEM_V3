@@ -1,0 +1,115 @@
+{
+  "nodes": [
+    {
+      "id": "textInput-1790307605234",
+      "type": "custom",
+      "position": {
+        "x": -210.8822944568408,
+        "y": 228.25022278068997
+      },
+      "data": {
+        "label": "Text Input",
+        "type": "textInput",
+        "status": "complete",
+        "config": {},
+        "result": {
+          "type": "text",
+          "value": "Sample text input",
+          "timestamp": 1790307725950
+        }
+      },
+      "measured": {
+        "width": 340,
+        "height": 271
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "deepseek-cli-node-1790307625764",
+      "type": "custom",
+      "position": {
+        "x": 163.81881524240896,
+        "y": 225.89241322393192
+      },
+      "data": {
+        "label": "DeepSeek CLI Agent",
+        "type": "deepseek-cli-node",
+        "status": "error",
+        "config": {
+          "apiKey": "sk-5a053c9c5dd44a969542ccf836c81884",
+          "model": "deepseek-chat",
+          "intentPrompt": "wylistuj pliki w obecnym katalogu"
+        },
+        "error": "Brak klucza API DeepSeek w konfiguracji węzła!"
+      },
+      "measured": {
+        "width": 340,
+        "height": 271
+      },
+      "selected": true,
+      "dragging": false
+    },
+    {
+      "id": "terminal-executor-1790307648210",
+      "type": "custom",
+      "position": {
+        "x": 521.7067393460575,
+        "y": 80.26692845908231
+      },
+      "data": {
+        "label": "terminal-executor",
+        "type": "terminal-executor",
+        "status": "idle",
+        "config": {}
+      },
+      "measured": {
+        "width": 320,
+        "height": 380
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "fileWrite-1790307699322",
+      "type": "custom",
+      "position": {
+        "x": 941.2430086965165,
+        "y": 78.42664815243738
+      },
+      "data": {
+        "label": "File Write",
+        "type": "fileWrite",
+        "status": "idle",
+        "config": {
+          "fileName": "odp.md",
+          "filePath": "Z:\\jimbo-node-system-v2\\public"
+        }
+      },
+      "measured": {
+        "width": 260,
+        "height": 212
+      },
+      "selected": false,
+      "dragging": false
+    }
+  ],
+  "edges": [
+    {
+      "source": "textInput-1790307605234",
+      "target": "deepseek-cli-node-1790307625764",
+      "id": "xy-edge__textInput-1790307605234-deepseek-cli-node-1790307625764"
+    },
+    {
+      "source": "deepseek-cli-node-1790307625764",
+      "target": "terminal-executor-1790307648210",
+      "id": "xy-edge__deepseek-cli-node-1790307625764-terminal-executor-1790307648210"
+    },
+    {
+      "source": "terminal-executor-1790307648210",
+      "target": "fileWrite-1790307699322",
+      "id": "xy-edge__terminal-executor-1790307648210-fileWrite-1790307699322"
+    }
+  ],
+  "workflowName": "Untitled Workflow"
+}
