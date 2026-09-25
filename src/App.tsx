@@ -22,14 +22,10 @@ interface SavedWorkflow {
 
 function App() {
   const [propertiesPanelOpen, setPropertiesPanelOpen] = useState(false)
-  const { nodes, edges, setNodes, setEdges, removeNode, selectNode, addNode, undo, redo, canUndo, canRedo, exportWorkflow } = useWorkflowStore()
+  const { nodes, edges, setNodes, setEdges, removeNode, selectNode, addNode, undo, redo, canUndo, canRedo, exportWorkflow, canvasConfig, updateCanvasConfig } = useWorkflowStore()
   const [savedWorkflow, setSavedWorkflow] = useKV<SavedWorkflow>('jimbo-workflow', { nodes: [], edges: [] })
 
-  const [minimapEnabled, setMinimapEnabled] = useKV<boolean>('minimap-enabled', true)
-  const [minimapOpacity, setMinimapOpacity] = useKV<number>('minimap-opacity', 1)
-  const [backgroundImage, setBackgroundImage] = useKV<string | null>('canvas-background-image', null)
-  const [backgroundOpacity, setBackgroundOpacity] = useKV<number>('canvas-background-opacity', 0.3)
-
+  
   useEffect(() => {
     const registeredAddons = new Set<string>()
     
