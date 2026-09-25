@@ -9,11 +9,17 @@ import { resolve } from 'path'
 const projectRoot = process.env.PROJECT_ROOT || import.meta.dirname
 
 export default defineConfig(({ mode }) => {
+  const customEnvPrefixes = [
+    'VITE_', 'OPENAI_', 'ANTHROPIC_', 'GEMINI_', 'GROQ_', 'DEEPSEEK_', 
+    'OPENROUTER_', 'EDEN_', 'XAI_', 'FAL_', 'REPLICATE_', 'ELEVENLABS_',
+    'TOGETHER_', 'MISTRAL_', 'COHERE_', 'PERPLEXITY_', 'HUGGINGFACE_'
+  ];
   const env = loadEnv(mode, process.cwd(), '');
   const port = parseInt(env.VITE_PORT || '4120');
   const jimboUrl = env.VITE_JIMBO_URL || 'http://localhost:6031';
 
   return {
+    envPrefix: customEnvPrefixes,
     plugins: [
       react(),
       tailwindcss(),

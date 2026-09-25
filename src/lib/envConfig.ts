@@ -110,19 +110,19 @@ export function getProviderConfig(providerId: string): AIProvider | undefined {
 }
 
 export function getEnvFallback(apiKeyName: string): string {
-  // Vite injects these at build time, so we must map them explicitly
+  // Check VITE_ prefix first, then raw prefix (enabled via vite.config.ts)
   const envMap: Record<string, string | undefined> = {
-    'OPENAI_API_KEY': import.meta.env.VITE_OPENAI_API_KEY,
-    'ANTHROPIC_API_KEY': import.meta.env.VITE_ANTHROPIC_API_KEY,
-    'GOOGLE_API_KEY': import.meta.env.VITE_GOOGLE_API_KEY,
-    'MISTRAL_API_KEY': import.meta.env.VITE_MISTRAL_API_KEY,
-    'COHERE_API_KEY': import.meta.env.VITE_COHERE_API_KEY,
-    'PERPLEXITY_API_KEY': import.meta.env.VITE_PERPLEXITY_API_KEY,
-    'HUGGINGFACE_API_KEY': import.meta.env.VITE_HUGGINGFACE_API_KEY,
-    'GROQ_API_KEY': import.meta.env.VITE_GROQ_API_KEY,
-    'TOGETHER_API_KEY': import.meta.env.VITE_TOGETHER_API_KEY,
-    'REPLICATE_API_KEY': import.meta.env.VITE_REPLICATE_API_KEY,
-    'ELEVENLABS_API_KEY': import.meta.env.VITE_ELEVENLABS_API_KEY,
+    'OPENAI_API_KEY': import.meta.env.VITE_OPENAI_API_KEY || import.meta.env.OPENAI_API_KEY,
+    'ANTHROPIC_API_KEY': import.meta.env.VITE_ANTHROPIC_API_KEY || import.meta.env.ANTHROPIC_API_KEY,
+    'GOOGLE_API_KEY': import.meta.env.VITE_GOOGLE_API_KEY || import.meta.env.GEMINI_API_KEY,
+    'MISTRAL_API_KEY': import.meta.env.VITE_MISTRAL_API_KEY || import.meta.env.MISTRAL_API_KEY,
+    'COHERE_API_KEY': import.meta.env.VITE_COHERE_API_KEY || import.meta.env.COHERE_API_KEY,
+    'PERPLEXITY_API_KEY': import.meta.env.VITE_PERPLEXITY_API_KEY || import.meta.env.PERPLEXITY_API_KEY,
+    'HUGGINGFACE_API_KEY': import.meta.env.VITE_HUGGINGFACE_API_KEY || import.meta.env.HUGGINGFACE_API_KEY,
+    'GROQ_API_KEY': import.meta.env.VITE_GROQ_API_KEY || import.meta.env.GROQ_API_KEY,
+    'TOGETHER_API_KEY': import.meta.env.VITE_TOGETHER_API_KEY || import.meta.env.TOGETHER_API_KEY,
+    'REPLICATE_API_KEY': import.meta.env.VITE_REPLICATE_API_KEY || import.meta.env.REPLICATE_API_KEY,
+    'ELEVENLABS_API_KEY': import.meta.env.VITE_ELEVENLABS_API_KEY || import.meta.env.ELEVENLABS_API_KEY,
   }
   return envMap[apiKeyName] || ''
 }
